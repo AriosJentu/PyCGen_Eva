@@ -20,14 +20,15 @@ def get_request():
 
 	pos = rand(1, DEF_LEN-strlen)
 	substr = hashstring[pos:pos+strlen]
+	rand_ord_local = rand(1, rand_ord)
 	
-	moved_av = "".join([randomized[i+rand_ord] for i in range(-len(randomized), 0)])
+	moved_av = "".join([randomized[i+rand_ord_local] for i in range(-len(randomized), 0)])
 
 	newstr = ""
 	for i in substr:
 		newstr += moved_av[randomized.index(i)]
 
-	return randomized[rand_ord] + "%.2x"%pos + newstr
+	return randomized[rand_ord_local] + "%.2x"%pos + newstr
 
 def check_activation_code(request, activation):
 
@@ -39,14 +40,18 @@ def check_activation_code(request, activation):
 	except:
 		return False
 
-	rand_ord = randomized.index(request[0])
+	rand_ord_local = randomized.index(request[0])
 	pos = int(request[1:3], 16)
 
-	moved_av = "".join([randomized[i+rand_ord] for i in range(-len(randomized), 0)])
+	moved_av = "".join([randomized[i+rand_ord_local] for i in range(-len(randomized), 0)])
 
 	oldstr = ""
 	for i in request[3:]:
 		oldstr += randomized[moved_av.index(i)]
+
+	print("---")
+	print(oldstr)
+	print("---")
 		
 	ln = len(oldstr)
 	if hashstring[pos:pos+ln] != oldstr:

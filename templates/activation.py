@@ -23,16 +23,17 @@ def get_activation(request):
 	except:
 		return False
 
-	rand_ord = randomized.index(request[0])
+	rand_ord_local = randomized.index(request[0])
 	pos = int(request[1:3], 16)
 
-	moved_av = "".join([randomized[i+rand_ord] for i in range(-len(randomized), 0)])
+	moved_av = "".join([randomized[i+rand_ord_local] for i in range(-len(randomized), 0)])
 
 	oldstr = ""
 	for i in request[3:]:
 		oldstr += randomized[moved_av.index(i)]
 
 	ln = len(oldstr)
+
 	if hashstring[pos:pos+ln] != oldstr:
 		return False
 

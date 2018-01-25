@@ -1,7 +1,18 @@
 from string import ascii_letters as letters, digits
 from random import randint as rand, choice
-import server
-import activation
+
+sfnd = True
+afnd = True
+
+try:
+	import server
+except:
+	sfnd = False
+
+try:
+	import activation
+except:
+	afnd = False
 
 subletters = "=*+-&^"
 available = letters+digits+subletters
@@ -100,22 +111,37 @@ while chooser != 0:
 		print("[!] Server.Py file generated")
 		print()
 
+		print("[!] Generating Server.Lua file")
+
+		with open("templates/server.lua", "r") as server_from, open("server.lua", "w") as server_to:
+
+			print(" [~] Reading content")
+			content = server_from.read()
+			content = content.replace("$AVAILABLE$", available)
+			content = content.replace("$RANDOMIZED$", randomized)
+			content = content.replace("$HASHSTRING$", hashstring)
+			content = content.replace("'$RANDORD$'", str(rand_ord))
+			print(" [~] Writing content")
+			server_to.write(content)
+			print(" [~] Content has been written")
+
+		print("[!] Server.Lua file generated")
+		print()
+
 		print("[!] Finished")
 
 	elif chooser == 2:
 
 		try:
+			import server
+			sfnd = True
+		except:
+			sfnd = False
+
+		if sfnd:
 			print()
 			print("[!] Import Server.Py file")
 			from server import get_request
-
-		except:
-			print("[!] Server.Py file not found")
-			print()
-
-		else:
-
-			print("[!] Successfully Imported")
 
 			print("[~] Your Request Code:")
 			print("=-------------------------------------------=")
@@ -124,21 +150,27 @@ while chooser != 0:
 			print("[~]")
 			print()
 
+		else:
+
+			print("[!] Server.Py file not found")
+			print()
+
+			print("[!] Successfully Imported")
+
 		print("[!] Finished")
 
 	elif chooser == 3:
 
 		try:
+			import activation
+			afnd = True
+		except:
+			afnd = False
+
+		if afnd:
 			print()
 			print("[!] Import Activation.Py file")
 			from activation import get_activation
-
-		except:
-
-			print("[!] Activation.Py file not found")
-			print()
-
-		else:
 		
 			print("[!] Successfully Imported")
 			print()
@@ -152,20 +184,26 @@ while chooser != 0:
 			print("[~]")
 			print()
 
+		else:
+
+			print("[!] Activation.Py file not found")
+			print()
+
 		print("[!] Finished")
 
 	elif chooser == 4:
 
 		try:
+			import server
+			sfnd = True
+		except:
+			sfnd = False
+			
+		if sfnd:
 			print()
 			print("[!] Import Server.Py file")
 			from server import check_activation_code
 
-		except:
-			print("[!] Server.Py file not found")
-			print()
-
-		else:
 			print("[!] Successfully Imported")
 
 			print()
@@ -179,9 +217,15 @@ while chooser != 0:
 			print()
 			print("[~] Your Request Code:")
 			print("=-------------------------------------------=")
+			print(check_activation_code(request, activation))
 			print("Code Is Correct" if check_activation_code(request, activation) == True else "Invalid Code")
 			print("=-------------------------------------------=")
 			print("[~]")
+			print()
+		
+		else:
+
+			print("[!] Server.Py file not found")
 			print()
 
 		print("[!] Finished")
