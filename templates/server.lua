@@ -8,7 +8,7 @@ local DEF_LEN = 260
 local seed_func = os.time
 function to_table(str)
 
-	res = {}
+	local res = {}
 	for i = 1, #str do
 		res[i] = str:sub(i, i)
 	end

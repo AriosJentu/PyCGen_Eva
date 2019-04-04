@@ -18,21 +18,46 @@ subletters = "=*+-&^"
 available = letters+digits+subletters
 DEF_LEN = 260
 
+class Col:
+	HEADER = '\033[95m'
+	OKBLUE = '\033[94m'
+	OKGREEN = '\033[92m'
+	WARNING = '\033[93m'
+	FAIL = '\033[91m'
+	ENDC = '\033[0m'
+	BOLD = '\033[1m'
+	UNDERLINE = '\033[4m'
+
+	def info(string):
+		return Col.OKBLUE+Col.BOLD+string
+
+	def menu(string):
+		return Col.OKGREEN+Col.BOLD+string
+
+	def substr(string):
+		return Col.HEADER+Col.BOLD+string
+
+	def input(string):
+		return Col.WARNING+Col.BOLD+string
+
+	def err(string):
+		return Col.FAIL+Col.BOLD+string
+
 chooser = -1
 while chooser != 0:
 
-	print("=-------------------------------------------=")
-	print("Python Code Activation generator")
-	print("=-------------------------------------------=")
-	print("[?] Select option:")
-	print("[1] Generate main files")
-	print("[2] Generate request-code")
-	print("[3] Generate activation code by request-code")
-	print("[4] Check activation code for validity")
-	print("[~]")
-	print("[0] Exit")
+	print(Col.info("=-------------------------------------------="))
+	print(Col.info("Python Code Activation generator"))
+	print(Col.info("=-------------------------------------------="))
+	print(Col.substr("[?] ") + Col.err("Select option:"))
+	print(Col.menu("[1] ") + Col.info("Generate main files"))
+	print(Col.menu("[2] ") + Col.info("Generate request-code"))
+	print(Col.menu("[3] ") + Col.info("Generate activation code by request-code"))
+	print(Col.menu("[4] ") + Col.info("Check activation code for validity"))
+	print(Col.substr("[~]"))
+	print(Col.menu("[0] ") + Col.info("Exit"))
 
-	chooser = input("Input: ")
+	chooser = input(Col.input("Input: "))
 
 	try:
 		chooser = int(chooser)
@@ -41,94 +66,105 @@ while chooser != 0:
 		chooser = -1
 
 
-	print("=-------------------------------------------=")
+	print(Col.info("=-------------------------------------------="))
 
 	if chooser == 1:
 	
 		print()
-		print("[!] Generating randomized alphabet")
+		print(Col.input("[!] ") + Col.info("Generating randomized alphabet"))
 
 		randomized = list(available)
 
 		for i in range(rand(1, 100)):
+
 			x = rand(1, len(randomized)//2)
 			y = rand(len(randomized)//2, len(randomized)-1)
 			randomized[x], randomized[y] = randomized[y], randomized[x]
 			randomized = randomized[x:]+randomized[:x]
 
+
 		randomized = "".join(randomized)
-		print("[!] Alphabet generated")
+		print(Col.input("[!] ") + Col.substr("Alphabet generated"))
 
-		print("")
-
-		print("[!] Generating Hash String")
+		print()
+		print(Col.input("[!] ") + Col.info("Generating Hash String"))
 
 		hashstring = ""
 		for i in range(DEF_LEN):
 			hashstring += choice(available)
 
-		print("[!] Hash String generated")
+
+		print(Col.input("[!] ") + Col.substr("Hash String generated"))
 		
 		print()
+		print(Col.input("[!] ") + Col.info("Generating Random Shifting Number"))
 
-		print("[!] Generating Random Shifting Number")
 		rand_ord = rand(10, 50)
-		print("[!] Random Shifting Number generated")
+		print(Col.input("[!] ") + Col.substr("Random Shifting Number generated"))
 
 		print()
+		print(Col.input("[!] ") + Col.info("Generating Activation.Py file"))
 
-		print("[!] Generating Activation.Py file")
 
 		with open("templates/activation.py", "r") as activ_from, open("activation.py", "w") as activ_to:
 
-			print(" [~] Reading content")
+			print(Col.substr(" [~] ") + Col.info("Reading content"))
+
 			content = activ_from.read()
 			content = content.replace("$AVAILABLE$", available)
 			content = content.replace("$RANDOMIZED$", randomized)
 			content = content.replace("$HASHSTRING$", hashstring)
 			content = content.replace("'$RANDORD$'", str(rand_ord))
-			print(" [~] Writing content")
+
+			print(Col.substr(" [~] ") + Col.info("Writing content"))
 			activ_to.write(content)
-			print(" [~] Content has been written")
+			print(Col.substr(" [~] ") + Col.menu("Content has been written"))
 
-		print("[!] Activation.Py file generated")
+
+		print(Col.input("[!] ") + Col.substr("Activation.Py file generated"))
+
 		print()
-
-		print("[!] Generating Server.Py file")
+		print(Col.input("[!] ") + Col.info("Generating Server.Py file"))
 
 		with open("templates/server.py", "r") as server_from, open("server.py", "w") as server_to:
 
-			print(" [~] Reading content")
+			print(Col.substr(" [~] ") + Col.info("Reading content"))
+
 			content = server_from.read()
 			content = content.replace("$AVAILABLE$", available)
 			content = content.replace("$RANDOMIZED$", randomized)
 			content = content.replace("$HASHSTRING$", hashstring)
 			content = content.replace("'$RANDORD$'", str(rand_ord))
-			print(" [~] Writing content")
+
+			print(Col.substr(" [~] ") + Col.info("Writing content"))
 			server_to.write(content)
-			print(" [~] Content has been written")
+			print(Col.substr(" [~] ") + Col.menu("Content has been written"))
 
-		print("[!] Server.Py file generated")
+
+		print(Col.input("[!] ") + Col.substr("Server.Py file generated"))
+
 		print()
-
-		print("[!] Generating Server.Lua file")
+		print(Col.input("[!] ") + Col.info("Generating Server.Lua file"))
 
 		with open("templates/server.lua", "r") as server_from, open("server.lua", "w") as server_to:
 
-			print(" [~] Reading content")
+			print(Col.substr(" [~] ") + Col.info("Reading content"))
+
 			content = server_from.read()
 			content = content.replace("$AVAILABLE$", available)
 			content = content.replace("$RANDOMIZED$", randomized)
 			content = content.replace("$HASHSTRING$", hashstring)
 			content = content.replace("'$RANDORD$'", str(rand_ord))
-			print(" [~] Writing content")
+
+			print(Col.substr(" [~] ") + Col.info("Writing content"))
 			server_to.write(content)
-			print(" [~] Content has been written")
+			print(Col.substr(" [~] ") + Col.menu("Content has been written"))
 
-		print("[!] Server.Lua file generated")
+
+		print(Col.input("[!] ") + Col.substr("Server.Lua file generated"))
+
 		print()
-
-		print("[!] Finished")
+		print(Col.menu("[!] ") + Col.info("Finished"))
 
 	elif chooser == 2:
 
@@ -139,25 +175,28 @@ while chooser != 0:
 			sfnd = False
 
 		if sfnd:
-			print()
-			print("[!] Import Server.Py file")
-			from server import get_request
 
-			print("[~] Your Request Code:")
-			print("=-------------------------------------------=")
-			print(get_request())
-			print("=-------------------------------------------=")
-			print("[~]")
+			print()
+			print(Col.input("[!] ") + Col.info("Import Server.Py file"))
+
+			from server import get_request
+			print(Col.input("[!] ") + Col.menu("Successfully Imported"))
+
+			print()
+			print(Col.input("[~] ") + Col.substr("Your Request Code"))
+			print(Col.info("=-------------------------------------------="))
+			print(Col.input(get_request()))
+			print(Col.info("=-------------------------------------------="))
+			print(Col.input("[~] "))
 			print()
 
 		else:
 
-			print("[!] Server.Py file not found")
+			print(Col.substr("[!] ") + Col.err("Server.Py file not found"))
 			print()
+			continue
 
-			print("[!] Successfully Imported")
-
-		print("[!] Finished")
+		print(Col.menu("[!] ") + Col.info("Finished"))
 
 	elif chooser == 3:
 
@@ -168,28 +207,32 @@ while chooser != 0:
 			afnd = False
 
 		if afnd:
+			
 			print()
-			print("[!] Import Activation.Py file")
+			print(Col.input("[!] ") + Col.info("Import Activation.Py file"))
+			
 			from activation import get_activation
+			print(Col.info("[!] ") + Col.menu("Successfully Imported"))
 		
-			print("[!] Successfully Imported")
 			print()
-			print("[?] Enter Your Request Code:")
-			request = input("Input: ")
+			print(Col.menu("[?] ") + Col.substr("Enter Your Request Code:"))
+			request = input(Col.input("Input: "))
+			
 			print()
-			print("[~] Your Activation Code:")
-			print("=-------------------------------------------=")
-			print(get_activation(request))
-			print("=-------------------------------------------=")
-			print("[~]")
+			print(Col.input("[~] ") + Col.substr("Your Activation Code"))
+			print(Col.info("=-------------------------------------------="))
+			print(Col.input(get_activation(request)))
+			print(Col.info("=-------------------------------------------="))
+			print(Col.input("[~] "))
 			print()
 
 		else:
 
-			print("[!] Activation.Py file not found")
+			print(Col.substr("[!] ") + Col.err("Activation.Py file not found"))
 			print()
+			continue
 
-		print("[!] Finished")
+		print(Col.menu("[!] ") + Col.info("Finished"))
 
 	elif chooser == 4:
 
@@ -201,33 +244,34 @@ while chooser != 0:
 			
 		if sfnd:
 			print()
-			print("[!] Import Server.Py file")
+			print(Col.input("[!] ") + Col.info("Import Server.Py file"))
 			from server import check_activation_code
 
-			print("[!] Successfully Imported")
+			print(Col.info("[!] ") + Col.menu("Successfully Imported"))
 
 			print()
-			print("[?] Enter Your Request Code:")
-			request = input("Input: ")
+			print(Col.menu("[?] ") + Col.substr("Enter Your Request Code:"))
+			request = input(Col.input("Input: "))
 			print()
 
 			print()
-			print("[?] Enter Your Activation Code:")
-			activation = input("Input: ")
+			print(Col.menu("[?] ") + Col.substr("Enter Your Activation Code:"))
+			activation = input(Col.input("Input: "))
 			print()
-			print("[~] Your Request Code:")
-			print("=-------------------------------------------=")
-			print(check_activation_code(request, activation))
-			print("Code Is Correct" if check_activation_code(request, activation) == True else "Invalid Code")
-			print("=-------------------------------------------=")
-			print("[~]")
+			print(Col.input("[~] ") + Col.substr("Activation Status:"))
+			print(Col.info("=-------------------------------------------="))
+			print(Col.input(str(check_activation_code(request, activation))))
+			print(Col.info("Code Is Correct" if (check_activation_code(request, activation) == True) else "Invalid Code"))
+			print(Col.info("=-------------------------------------------="))
+			print(Col.input("[~] "))
 			print()
 		
 		else:
 
-			print("[!] Server.Py file not found")
+			print(Col.substr("[!] ") + Col.err("Server.Py file not found"))
 			print()
+			continue
 
-		print("[!] Finished")
+		print(Col.menu("[!] ") + Col.info("Finished"))
 	
 	print()

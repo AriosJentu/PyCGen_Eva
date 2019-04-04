@@ -49,9 +49,9 @@ def check_activation_code(request, activation):
 	for i in request[3:]:
 		oldstr += randomized[moved_av.index(i)]
 
-	print("---")
-	print(oldstr)
-	print("---")
+	# print("---")
+	# print(oldstr)
+	# print("---")
 		
 	ln = len(oldstr)
 	if hashstring[pos:pos+ln] != oldstr:
