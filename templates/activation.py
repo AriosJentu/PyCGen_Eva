@@ -60,4 +60,10 @@ def get_activation(request):
 		elif not (rand_pos < i < rand_pos+4):
 			newstr += randomized[rand(0, len(randomized)-1)]
 
+	strsum = get_sum(newstr)
+	sumnstr = "".join([randomized[int(i)] for i in str(strsum)])
+	newstr += sumnstr+randomized[len(sumnstr)]
+
+	print("|!", sumnstr, len(sumnstr), strsum, "!|")
+
 	return newstr

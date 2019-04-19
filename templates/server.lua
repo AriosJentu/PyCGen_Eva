@@ -6,7 +6,7 @@ local rand_ord = '$RANDORD$'
 local DEF_LEN = 260
 
 local seed_func = os.time
-function to_table(str)
+local function to_table(str)
 
 	local res = {}
 	for i = 1, #str do
@@ -17,7 +17,7 @@ function to_table(str)
 
 end
 
-function get_pos(val, table)
+local function get_pos(val, table)
 
 	for k, v in pairs(table) do
 		if v == val then
@@ -28,7 +28,7 @@ function get_pos(val, table)
 
 end
 
-function get_sum(value)
+local function get_sum(value)
 
 	local sums = 0
 
@@ -41,7 +41,7 @@ function get_sum(value)
 end
 
 
-function get_request()
+local function get_request()
 
 	math.randomseed(seed_func())
 	local strlen = math.random(50, 80)
@@ -66,7 +66,7 @@ function get_request()
 
 end
 
-function check_activation_code(request, activation)
+local function check_activation_code(request, activation)
 
 	local request_tab = to_table(request)
 	local activation_tab = to_table(activation)
@@ -122,8 +122,17 @@ function check_activation_code(request, activation)
 	end
 
 	--print(hexad)
+	
+	local ax = activation:sub(-1, -1)
+	local sumnstrlen = get_pos(ax, to_table(randomized))-1
+	local sumstr = activation:sub(-(sumnstrlen+1), -2)
+	local strsum = ""
+	for i, v in pairs(to_table(sumstr)) do
+		strsum = strsum..tostring(get_pos(v, to_table(randomized))-1)
+	end
 
-	return tonumber(hexad, 16) == sumsr
+	--print(sumnstrlen, sumstr, strsum, get_sum(activation:sub(1, -(sumnstrlen+2))) )
+	return tonumber(hexad, 16) == sumsr and tonumber(strsum) == get_sum(activation:sub(1, -(sumnstrlen+2)))
 
 end
 

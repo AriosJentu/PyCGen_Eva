@@ -77,5 +77,10 @@ def check_activation_code(request, activation):
 	except:
 		return False
 
-	return int(hexad, 16) == sumsr
+	sumnstrlen = randomized.index(activation[-1])
+	sumstr = activation[-(sumnstrlen+1):-1]
+	strsum = int("".join([str(randomized.index(i)) for i in sumstr]))
+	print("|~", sumnstrlen, sumstr, strsum, get_sum(activation[:-(sumnstrlen+1)]), "~|")
+
+	return int(hexad, 16) == sumsr and strsum == get_sum(activation[:-(sumnstrlen+1)])
 
