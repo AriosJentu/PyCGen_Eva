@@ -1,16 +1,17 @@
 from string import ascii_letters as letters, digits
 from random import randint as rand, choice
+import os
 
 sfnd = True
 afnd = True
 
 try:
-	import server
+	import build.server
 except:
 	sfnd = False
 
 try:
-	import activation
+	import build.activation
 except:
 	afnd = False
 
@@ -69,16 +70,20 @@ while chooser != 0:
 	print(Col.info("=-------------------------------------------="))
 
 	if chooser == 1:
+
+		if not os.path.exists('build'):
+			os.makedirs('build')
 	
 		print()
 		print(Col.input("[!] ") + Col.info("Generating randomized alphabet"))
 
 		randomized = list(available)
+		randlen = len(randomized)
 
 		for i in range(rand(1, 100)):
 
-			x = rand(1, len(randomized)//2)
-			y = rand(len(randomized)//2, len(randomized)-1)
+			x = rand(1, randlen//2)
+			y = rand(randlen//2, randlen-1)
 			randomized[x], randomized[y] = randomized[y], randomized[x]
 			randomized = randomized[x:]+randomized[:x]
 
@@ -106,7 +111,7 @@ while chooser != 0:
 		print(Col.input("[!] ") + Col.info("Generating Activation.Py file"))
 
 
-		with open("templates/activation.py", "r") as activ_from, open("activation.py", "w") as activ_to:
+		with open("templates/activation.py", "r") as activ_from, open("build/activation.py", "w") as activ_to:
 
 			print(Col.substr(" [~] ") + Col.info("Reading content"))
 
@@ -126,7 +131,7 @@ while chooser != 0:
 		print()
 		print(Col.input("[!] ") + Col.info("Generating Server.Py file"))
 
-		with open("templates/server.py", "r") as server_from, open("server.py", "w") as server_to:
+		with open("templates/server.py", "r") as server_from, open("build/server.py", "w") as server_to:
 
 			print(Col.substr(" [~] ") + Col.info("Reading content"))
 
@@ -146,7 +151,7 @@ while chooser != 0:
 		print()
 		print(Col.input("[!] ") + Col.info("Generating Server.Lua file"))
 
-		with open("templates/server.lua", "r") as server_from, open("server.lua", "w") as server_to:
+		with open("templates/server.lua", "r") as server_from, open("build/server.lua", "w") as server_to:
 
 			print(Col.substr(" [~] ") + Col.info("Reading content"))
 
@@ -169,7 +174,7 @@ while chooser != 0:
 	elif chooser == 2:
 
 		try:
-			import server
+			import build.server
 			sfnd = True
 		except:
 			sfnd = False
@@ -179,7 +184,7 @@ while chooser != 0:
 			print()
 			print(Col.input("[!] ") + Col.info("Import Server.Py file"))
 
-			from server import get_request
+			from build.server import get_request
 			print(Col.input("[!] ") + Col.menu("Successfully Imported"))
 
 			print()
@@ -201,7 +206,7 @@ while chooser != 0:
 	elif chooser == 3:
 
 		try:
-			import activation
+			import build.activation
 			afnd = True
 		except:
 			afnd = False
@@ -211,7 +216,7 @@ while chooser != 0:
 			print()
 			print(Col.input("[!] ") + Col.info("Import Activation.Py file"))
 			
-			from activation import get_activation
+			from build.activation import get_activation
 			print(Col.info("[!] ") + Col.menu("Successfully Imported"))
 		
 			print()
@@ -237,7 +242,7 @@ while chooser != 0:
 	elif chooser == 4:
 
 		try:
-			import server
+			import build.server
 			sfnd = True
 		except:
 			sfnd = False
@@ -245,7 +250,7 @@ while chooser != 0:
 		if sfnd:
 			print()
 			print(Col.input("[!] ") + Col.info("Import Server.Py file"))
-			from server import check_activation_code
+			from build.server import check_activation_code
 
 			print(Col.info("[!] ") + Col.menu("Successfully Imported"))
 
@@ -260,7 +265,7 @@ while chooser != 0:
 			print()
 			print(Col.input("[~] ") + Col.substr("Activation Status:"))
 			print(Col.info("=-------------------------------------------="))
-			print(Col.input(str(check_activation_code(request, activation))))
+			#print(Col.input(str(check_activation_code(request, activation))))
 			print(Col.info("Code Is Correct" if (check_activation_code(request, activation) == True) else "Invalid Code"))
 			print(Col.info("=-------------------------------------------="))
 			print(Col.input("[~] "))
