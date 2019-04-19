@@ -64,6 +64,6 @@ def get_activation(request):
 	sumnstr = "".join([randomized[int(i)] for i in str(strsum)])
 	newstr += sumnstr+randomized[len(sumnstr)]
 
-	print("|!", sumnstr, len(sumnstr), strsum, "!|")
+	#print("|!", sumnstr, len(sumnstr), strsum, "!|")
 
 	return newstr
